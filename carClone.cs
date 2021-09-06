@@ -112,6 +112,7 @@ public class carClone : MonoBehaviour
         int a = Random.Range(0,3);
         GameObject newclone = Instantiate(car);
         //scarColor.color = Random.ColorHSV();
+        
     
 
         if (a == 0)

@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     bool buttonClickGas;
     bool buttonClickBreak;
     bool buttonClickHorn;
+    bool buttonClickLeft;
+    bool buttonClickRight;
 
     [SerializeField] private Camera mainCamera;
     [SerializeField] private LayerMask layerMask;
@@ -52,7 +54,16 @@ public class Player : MonoBehaviour
     public GameObject goPanel;
     public GameObject packetClone;
     public GameObject carClone;
-  
+
+    public GameObject howtoplayPanel;
+    public GameObject carCloneObj;
+    public GameObject gameCanvas;
+    int i = 0;
+
+    public GameObject t1;
+    public GameObject t2;
+    public GameObject t3;
+    public GameObject t4;
 
     void Start()
     {       
@@ -63,13 +74,99 @@ public class Player : MonoBehaviour
         {
             Debug.Log(PlayerPrefs.GetFloat("highScore"));
         }
+
+        if (PlayerPrefs.GetFloat("highScore") < 100)
+        {
+            Time.timeScale = 0;
+            howtoplayPanel.SetActive(true);
+            carCloneObj.SetActive(false);
+            gameCanvas.SetActive(false);
+            i = 1;
+        }
+        else
+        {
+            Debug.Log("skor 100 den büyük");
+        }
     }
+
+        public void btnHtpLeft()
+        {
+            if (i > 1)
+            {
+                i--;
+            }
+            
+            else
+            {
+                Time.timeScale = 1;              
+                howtoplayPanel.SetActive(false);
+                carCloneObj.SetActive(true);
+                gameCanvas.SetActive(true);
+                i = 0;       
+                  
+            }
+            
+            Debug.Log(i);
+        }
+
+        public void btnHtpRight()
+        {
+            if (i < 4)
+            {
+                i++;
+            }
+            
+            else
+            {
+                Time.timeScale = 1;              
+                howtoplayPanel.SetActive(false);
+                carCloneObj.SetActive(true);
+                gameCanvas.SetActive(true);
+                i = 0;              
+            }
+
+            Debug.Log(i);
+        }
 
     
     void Update()
     {
+        if (i == 1)
+        {
+            t1.SetActive(true);
+            t2.SetActive(false);
+            t3.SetActive(false);
+            t4.SetActive(false);                
+        }
+            
+        if (i == 2)
+        {
+            t1.SetActive(false);
+            t2.SetActive(true);
+            t3.SetActive(false);
+            t4.SetActive(false);               
+        }
+            
+        if (i == 3)
+        {
+            t1.SetActive(false);
+            t2.SetActive(false);
+            t3.SetActive(true);
+            t4.SetActive(false);
+        }
+            
+        if (i == 4)
+        {
+            t1.SetActive(false);
+            t2.SetActive(false);
+            t3.SetActive(false);
+            t4.SetActive(true);
+        }
+
+        ///////////////////////////////////////////
+
         controller();
-        AccelerometreMove();
+        //AccelerometreMove();
 
         if (speed > 5)
         {
@@ -86,11 +183,13 @@ public class Player : MonoBehaviour
         carDestroy2.position = new Vector3(carDestroy2.transform.position.x, carDestroy2.transform.position.y, cargoCar.transform.position.z - 8); 
         HornCube.position = new Vector3(cargoCar.transform.position.x, cargoCar.transform.position.y, cargoCar.transform.position.z + 2); 
        
-        if (speed > 2.5f )
+        if (speed >= 2f && speed < 11f)
         {
             if (Time.timeScale == 1)
             {
-                speed-=0.003f;
+                //speed-=0.003f;
+                speed += 0.015f;
+                cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-10,0,0), .2f);
             }
             
              
@@ -111,6 +210,7 @@ public class Player : MonoBehaviour
                 cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-10,0,0), .2f);
             }      */      
         }
+        
         if (buttonClickBreak)
         {
             if (speed >= 2.5f)
@@ -121,13 +221,24 @@ public class Player : MonoBehaviour
             }      
         }
 
-        if (buttonClickHorn)
+        if (buttonClickLeft)
         {
-            
+            if (transform.position.x > -1.19f)
+            {
+                transform.position += Vector3.left * sideSpeed *Time.deltaTime;
+                cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0,10), .3f);       
+            }    
         }
         
-
-
+        if (buttonClickRight)
+        {
+            if (transform.position.x < 1.19f)
+            {
+                transform.position += Vector3.right * sideSpeed *Time.deltaTime;
+                cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0,-10), .3f);
+            }
+        }
+        
     }
 
 
@@ -144,25 +255,25 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow) && transform.position.x < 1.19f)
         {
             transform.position += Vector3.right * sideSpeed *Time.deltaTime;
-            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0,-13), .3f);
+            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0,-10), .3f);
         }
         
         if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x > -1.19f)
         {
             transform.position += Vector3.left * sideSpeed *Time.deltaTime;
-            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0,13), .3f);       
+            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0,10), .3f);       
         }
 
         if (Input.GetKey(KeyCode.UpArrow) && speed < 11f)
         {
             speed += 0.02f;
-            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-13,0,0), .3f);
+            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-10,0,0), .3f);
         }
        
         if (Input.GetKey(KeyCode.DownArrow) && speed >= 2.5f)
         {
             speed -= 0.08f;
-            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(13,0,0), .3f);
+            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(10,0,0), .3f);
       
         }
 
@@ -177,13 +288,13 @@ public class Player : MonoBehaviour
         if (posX > 0.1f && transform.position.x < 1.19f)
         {
             transform.position += Vector3.right * sideSpeed *Time.deltaTime; 
-            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0,-13), .3f);
+            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0,-10), .3f);
         }
 
         if (posX < -0.1f && transform.position.x > -1.19f)
         {
             transform.position += Vector3.left * sideSpeed *Time.deltaTime;
-            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0,13), .3f);
+            cargoCarModel.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0,10), .3f);
         }
 
     }
@@ -207,11 +318,25 @@ public class Player : MonoBehaviour
         buttonClickHorn = true;     
     }
 
+
+    ////  gameplay 1
+
+    public void btnLeft()
+    {
+        buttonClickLeft = true;
+    }
+    public void btnRight()
+    {
+        buttonClickRight = true;     
+    }
+
     public void nullbuton()
     {
         buttonClickGas = false;
         buttonClickBreak = false;
         buttonClickHorn = false;
+        buttonClickLeft = false;
+        buttonClickRight = false;
         
         gasParticle.Stop();        
         hornVoice.Stop(); 
@@ -240,8 +365,6 @@ public class Player : MonoBehaviour
                 packetClone.SetActive(false);
                 carClone.SetActive(false);
 
-                
-                
                 //taPanel.SetActive(true);
                 //game paused                       
             }

@@ -15,6 +15,7 @@ public class gameController : MonoBehaviour
     public GameObject iCanvas;
     public GameObject msgCanvas;
     public GameObject htpCanvas;
+    //public GameObject howtoplayPanel;
 
     public GameObject t1;
     public GameObject t2;
@@ -57,37 +58,37 @@ public class gameController : MonoBehaviour
 
 
     
-            if (i == 1)
-            {
-                t1.SetActive(true);
-                t2.SetActive(false);
-                t3.SetActive(false);
-                t4.SetActive(false);                
-            }
+        if (i == 1)
+        {
+            t1.SetActive(true);
+            t2.SetActive(false);
+            t3.SetActive(false);
+            t4.SetActive(false);                
+        }
             
-            if (i == 2)
-            {
-                t1.SetActive(false);
-                t2.SetActive(true);
-                t3.SetActive(false);
-                t4.SetActive(false);               
-            }
+        if (i == 2)
+        {
+            t1.SetActive(false);
+            t2.SetActive(true);
+            t3.SetActive(false);
+            t4.SetActive(false);               
+        }
             
-            if (i == 3)
-            {
-                t1.SetActive(false);
-                t2.SetActive(false);
-                t3.SetActive(true);
-                t4.SetActive(false);
-            }
+        if (i == 3)
+        {
+            t1.SetActive(false);
+            t2.SetActive(false);
+            t3.SetActive(true);
+            t4.SetActive(false);
+        }
             
-            if (i == 4)
-            {
-                t1.SetActive(false);
-                t2.SetActive(false);
-                t3.SetActive(false);
-                t4.SetActive(true);
-            }
+        if (i == 4)
+        {
+            t1.SetActive(false);
+            t2.SetActive(false);
+            t3.SetActive(false);
+            t4.SetActive(true);
+        }
 
 
     }
@@ -95,8 +96,17 @@ public class gameController : MonoBehaviour
      // menu scenes 
     public void play()
     {
-        SceneManager.LoadScene("GameScene");
-        Time.timeScale = 1;
+        if(PlayerPrefs.GetFloat("highScore") < 100)
+        {
+            SceneManager.LoadScene("TutorialScene");
+            Time.timeScale = 1;
+        }
+        else
+        {
+            SceneManager.LoadScene("GameScene");
+            Time.timeScale = 1;
+        }
+  
         //SceneManager.LoadScene(SceneManager.GetActiveScene().GameScene);
         //Application.LoadLevel(Application.loadedLevel);
     }
@@ -229,6 +239,14 @@ public class gameController : MonoBehaviour
         pausePanel.SetActive(true);
         carCloneObj.SetActive(false);
     }
+
+    /*public void firstPlay()
+    {
+        Time.timeScale = 0;
+        howtoplayPanel.SetActive(true);
+        carCloneObj.SetActive(false);
+    }*/
+    
 
     public void resume()
     {
