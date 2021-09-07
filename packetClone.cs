@@ -109,7 +109,7 @@ public class packetClone : MonoBehaviour
         Ray outray = GameObject.Find("Main Camera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(outray.origin,outray.direction *10f , Color.red);
         
-        if (Physics.Raycast(outray, out carpma))
+        if (Physics.Raycast(outray, out carpma) && Input.GetMouseButtonDown(0))
         {
             if (carpma.collider.gameObject.tag == "Finish" )
             {                        

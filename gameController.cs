@@ -96,17 +96,9 @@ public class gameController : MonoBehaviour
      // menu scenes 
     public void play()
     {
-        if(PlayerPrefs.GetFloat("highScore") < 100)
-        {
-            SceneManager.LoadScene("TutorialScene");
-            Time.timeScale = 1;
-        }
-        else
-        {
-            SceneManager.LoadScene("GameScene");
-            Time.timeScale = 1;
-        }
-  
+        SceneManager.LoadScene("GameScene");
+        Time.timeScale = 1;
+        
         //SceneManager.LoadScene(SceneManager.GetActiveScene().GameScene);
         //Application.LoadLevel(Application.loadedLevel);
     }

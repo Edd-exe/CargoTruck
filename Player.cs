@@ -77,16 +77,23 @@ public class Player : MonoBehaviour
 
         if (PlayerPrefs.GetFloat("highScore") < 100)
         {
-            Time.timeScale = 0;
-            howtoplayPanel.SetActive(true);
-            carCloneObj.SetActive(false);
-            gameCanvas.SetActive(false);
-            i = 1;
+            ogreticiSahne();
         }
         else
         {
             Debug.Log("skor 100 den büyük");
         }
+    }
+
+    void ogreticiSahne()
+    {
+
+        Time.timeScale = 0;
+            howtoplayPanel.SetActive(true);
+            carCloneObj.SetActive(false);
+            gameCanvas.SetActive(false);
+            i = 1;
+
     }
 
         public void btnHtpLeft()
@@ -398,6 +405,7 @@ public class Player : MonoBehaviour
         carIdleVoice.Play(); 
         packetClone.SetActive(true);
         carClone.SetActive(true);
+        transform.rotation = Quaternion.Euler(0,0,0);
     }
 
     public void btnNoTAgain()
